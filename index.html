@@ -1,490 +1,660 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASEAN Passive Cooling Roadmap (2026-2050)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 40vh;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
-        }
-        body {
-            scroll-behavior: smooth;
-        }
-        .nav-link {
-            transition: color 0.3s;
-        }
-        .nav-link:hover {
-            color: #0d9488;
-        }
-        .tab-btn {
-            transition: all 0.3s;
-        }
-        .tab-active {
-            background-color: #0d9488;
-            color: white;
-            border-color: #0d9488;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-    
-    <!-- Chosen Palette: Warm Neutrals (Stone) with Teal (Cooling) and Orange/Red (Heat) accents -->
-    <!-- Application Structure Plan: The SPA uses a sequential, narrative-driven dashboard structure. It begins with the problem (The Heat Crisis baseline), introduces the conceptual solution (Passive First Philosophy), breaks down practical applications (Technology Matrix), audits the current landscape (Regional Readiness), and concludes with tailored actions (Action Plan & Roles). This flow guides users logically from awareness to action. Interactive tabs and selectors prevent information overload, keeping the single page clean and explorable. -->
-    <!-- Visualization & Content Choices: 
-         - Temp Projections -> Goal: Show escalating heat -> Viz: Grouped Bar Chart -> Interaction: Hover tooltips -> Justification: Clearly compares timeframes across cities -> Library: Chart.js.
-         - UHI & Green Cover -> Goal: Compare heat vs mitigation -> Viz: Combo Bar/Line Chart -> Interaction: Hover -> Justification: Shows correlation between low green cover and high UHI -> Library: Chart.js.
-         - Passive First Philosophy -> Goal: Explain methodology -> Viz: CSS-styled descending tiered blocks -> Interaction: Hover effects -> Justification: Visually represents the hierarchy of interventions without needing complex SVGs.
-         - Tech Savings -> Goal: Compare efficiency -> Viz: Horizontal Bar Chart -> Interaction: Hover -> Justification: Easy comparison of percentage savings -> Library: Chart.js.
-         - Regional Readiness -> Goal: Explore country data -> Viz: Selectable Grid + Dynamic Details Panel -> Interaction: Click to filter -> Justification: Manages dense policy/financial data interactively.
-         - Role Recommendations -> Goal: Actionable steps -> Viz: Tabbed interface -> Interaction: Click tabs -> Justification: Personalizes content delivery based on user persona. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASEAN Passive Cooling Roadmap (2026-2050)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        body {
+            scroll-behavior: smooth;
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #0d9488;
+        }
+        .tab-btn {
+            transition: all 0.3s;
+        }
+        .tab-active {
+            background-color: #0d9488;
+            color: white;
+            border-color: #0d9488;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    
+    <!-- Chosen Palette: Warm Neutrals (Stone) with Teal (Cooling) and Orange/Red (Heat) accents -->
+    <!-- Application Structure Plan: The SPA uses a sequential, narrative-driven dashboard structure. It begins with the problem (The Heat Crisis baseline), introduces the conceptual solution (Passive First Philosophy), breaks down practical applications (Technology Matrix), audits the current landscape (Regional Readiness), and concludes with tailored actions (Action Plan & Roles). This flow guides users logically from awareness to action. Interactive tabs and selectors prevent information overload, keeping the single page clean and explorable. -->
+    <!-- Visualization & Content Choices: 
+         - Temp Projections -> Goal: Show escalating heat -> Viz: Grouped Bar Chart -> Interaction: Hover tooltips -> Justification: Clearly compares timeframes across cities -> Library: Chart.js.
+         - UHI & Green Cover -> Goal: Compare heat vs mitigation -> Viz: Combo Bar/Line Chart -> Interaction: Hover -> Justification: Shows correlation between low green cover and high UHI -> Library: Chart.js.
+         - Passive First Philosophy -> Goal: Explain methodology -> Viz: CSS-styled descending tiered blocks -> Interaction: Hover effects -> Justification: Visually represents the hierarchy of interventions without needing complex SVGs.
+         - Tech Savings -> Goal: Compare efficiency -> Viz: Horizontal Bar Chart -> Interaction: Hover -> Justification: Easy comparison of percentage savings -> Library: Chart.js.
+         - Regional Readiness -> Goal: Explore country data -> Viz: Selectable Grid + Dynamic Details Panel -> Interaction: Click to filter -> Justification: Manages dense policy/financial data interactively.
+         - Role Recommendations -> Goal: Actionable steps -> Viz: Tabbed interface -> Interaction: Click tabs -> Justification: Personalizes content delivery based on user persona. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
 <body class="bg-stone-50 text-stone-800 font-sans antialiased">
 
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-stone-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-2">
-                    <span class="text-2xl text-teal-600">&#10052;</span>
-                    <span class="font-bold text-lg tracking-tight text-stone-900">ASEAN Cool<span class="text-teal-600">Map</span></span>
-                </div>
-                <div class="hidden md:flex space-x-8 font-medium text-sm text-stone-600">
-                    <a href="#crisis" class="nav-link">The Heat Crisis</a>
-                    <a href="#philosophy" class="nav-link">Passive First</a>
-                    <a href="#technology" class="nav-link">Technologies</a>
-                    <a href="#readiness" class="nav-link">Regional Readiness</a>
-                    <a href="#action" class="nav-link">Action Plan</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl text-teal-600">&#10052;</span>
+                    <span class="font-bold text-lg tracking-tight text-stone-900">ASEAN Cool<span class="text-teal-600">Map</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 font-medium text-sm text-stone-600">
+                    <a href="#crisis" class="nav-link">The Heat Crisis</a>
+                    <a href="#philosophy" class="nav-link">Passive First</a>
+                    <a href="#technology" class="nav-link">Technologies</a>
+                    <a href="#readiness" class="nav-link">Regional Readiness</a>
+                    <a href="#action" class="nav-link">Action Plan</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <header class="bg-stone-900 text-stone-50 py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none flex items-center justify-center text-[20rem]">
-            &#127777;
-        </div>
-        <div class="max-w-4xl mx-auto text-center relative z-10">
-            <span class="inline-block py-1 px-3 rounded-full bg-teal-900/50 text-teal-300 text-xs font-bold tracking-wider mb-4 uppercase border border-teal-700/50">Executive Synthesis 2026-2050</span>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">Extreme Heat Protection through <span class="text-teal-400">Passive Cooling</span> in ASEAN</h1>
-            <p class="text-lg sm:text-xl text-stone-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-                Translating the joint ACE & UNEP Roadmap into actionable insights. Explore quantitative climate baselines, technological solutions, and strategic frameworks to transition the region from mechanical dependency to climate-resilient design.
-            </p>
-            <a href="#crisis" class="inline-block bg-teal-600 hover:bg-teal-500 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-colors">
-                Explore the Data &#8595;
-            </a>
-        </div>
-    </header>
+    <header class="bg-stone-900 text-stone-50 py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none flex items-center justify-center text-[20rem]">
+            &#127777;
+        </div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="inline-block py-1 px-3 rounded-full bg-teal-900/50 text-teal-300 text-xs font-bold tracking-wider mb-4 uppercase border border-teal-700/50">Executive Synthesis 2026-2050</span>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">Extreme Heat Protection through <span class="text-teal-400">Passive Cooling</span> in ASEAN</h1>
+            <p class="text-lg sm:text-xl text-stone-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Translating the joint ACE & UNEP Roadmap into actionable insights. Explore quantitative climate baselines, technological solutions, and strategic frameworks to transition the region from mechanical dependency to climate-resilient design.
+            </p>
+            <a href="#crisis" class="inline-block bg-teal-600 hover:bg-teal-500 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition-colors">
+                Explore the Data &#8595;
+            </a>
+        </div>
+    </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
 
-        <section id="crisis" class="scroll-mt-24">
-            <div class="mb-8 border-l-4 border-orange-500 pl-4">
-                <h2 class="text-3xl font-bold text-stone-900 mb-2">1. The Heat Crisis: Climate Projections & UHI</h2>
-                <p class="text-stone-600 text-lg max-w-3xl">
-                    This section establishes the quantitative baseline for the roadmap. It visualizes the escalating thermal stress across major ASEAN cities up to 2050 under the RCP 4.5 scenario, alongside the compounding effects of Urban Heat Islands (UHI). Understanding these metrics is critical for recognizing the urgency of implementing passive cooling infrastructure to protect vulnerable populations.
-                </p>
-            </div>
+        <section id="crisis" class="scroll-mt-24">
+            <div class="mb-8 border-l-4 border-orange-500 pl-4">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">1. The Heat Crisis: Climate Projections & UHI</h2>
+                <p class="text-stone-600 text-lg max-w-3xl">
+                    This section establishes the quantitative baseline for the roadmap. It visualizes the escalating thermal stress across major ASEAN cities up to 2050 under the RCP 4.5 scenario, alongside the compounding effects of Urban Heat Islands (UHI). Understanding these metrics is critical for recognizing the urgency of implementing passive cooling infrastructure to protect vulnerable populations.
+                </p>
+            </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                    <h3 class="text-xl font-bold mb-4 text-stone-800 flex items-center gap-2"><span class="text-orange-500">&#128200;</span> Temperature Projections (2000-2050)</h3>
-                    <p class="text-sm text-stone-500 mb-6">Average temperatures are rising across the board, with cities like Bangkok and Kuala Lumpur facing the steepest increases. By 2050, extreme heat days (>35&deg;C) will more than double.</p>
-                    <div class="chart-container">
-                        <canvas id="tempChart"></canvas>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold mb-4 text-stone-800 flex items-center gap-2"><span class="text-orange-500">&#128200;</span> Temperature Projections (2000-2050)</h3>
+                    <p class="text-sm text-stone-500 mb-6">Average temperatures are rising across the board, with cities like Bangkok and Kuala Lumpur facing the steepest increases. By 2050, extreme heat days (>35&deg;C) will more than double.</p>
+                    <div class="chart-container">
+                        <canvas id="tempChart"></canvas>
+                    </div>
+                </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                    <h3 class="text-xl font-bold mb-4 text-stone-800 flex items-center gap-2"><span class="text-red-500">&#127750;</span> UHI Intensity vs. Green Cover</h3>
-                    <p class="text-sm text-stone-500 mb-6">Urban Heat Island (UHI) intensity worsens in areas with low green cover. Jakarta and Manila exhibit extreme daytime and nighttime UHI, emphasizing the need for immediate green infrastructure.</p>
-                    <div class="chart-container">
-                        <canvas id="uhiChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-8 bg-orange-50 p-6 rounded-xl border border-orange-100 flex gap-4 items-start">
-                <div class="text-3xl text-orange-500">&#9888;</div>
-                <div>
-                    <h4 class="font-bold text-orange-900">Critical Finding</h4>
-                    <p class="text-orange-800 text-sm mt-1">Bangkok, Ho Chi Minh City, and Manila will experience between 110 and 120 extreme heat days annually by 2050. Projections under RCP 8.5 scenarios predict an additional 1.0 to 2.0&deg;C rise above these figures, severely straining power grids and public health systems.</p>
-                </div>
-            </div>
-        </section>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold mb-4 text-stone-800 flex items-center gap-2"><span class="text-red-500">&#127750;</span> UHI Intensity vs. Green Cover</h3>
+                    <p class="text-sm text-stone-500 mb-6">Urban Heat Island (UHI) intensity worsens in areas with low green cover. Jakarta and Manila exhibit extreme daytime and nighttime UHI, emphasizing the need for immediate green infrastructure.</p>
+                    <div class="chart-container">
+                        <canvas id="uhiChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-orange-50 p-6 rounded-xl border border-orange-100 flex gap-4 items-start">
+                <div class="text-3xl text-orange-500">&#9888;</div>
+                <div>
+                    <h4 class="font-bold text-orange-900">Critical Finding</h4>
+                    <p class="text-orange-800 text-sm mt-1">Bangkok, Ho Chi Minh City, and Manila will experience between 110 and 120 extreme heat days annually by 2050. Projections under RCP 8.5 scenarios predict an additional 1.0 to 2.0&deg;C rise above these figures, severely straining power grids and public health systems.</p>
+                </div>
+            </div>
+        </section>
 
-        <section id="philosophy" class="scroll-mt-24">
-            <div class="mb-8 border-l-4 border-teal-600 pl-4">
-                <h2 class="text-3xl font-bold text-stone-900 mb-2">2. The "Passive First" Philosophy</h2>
-                <p class="text-stone-600 text-lg max-w-3xl">
-                    The core of the roadmap mandates a paradigm shift in building architecture. This section outlines the sequential design hierarchy required to break the cycle of mechanical dependency. By prioritizing lean architecture and passive interventions, developers can reduce capital costs and minimize operational energy before specifying any active cooling systems.
-                </p>
-            </div>
+        <section id="philosophy" class="scroll-mt-24">
+            <div class="mb-8 border-l-4 border-teal-600 pl-4">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">2. The "Passive First" Philosophy</h2>
+                <p class="text-stone-600 text-lg max-w-3xl">
+                    The core of the roadmap mandates a paradigm shift in building architecture. This section outlines the sequential design hierarchy required to break the cycle of mechanical dependency. By prioritizing lean architecture and passive interventions, developers can reduce capital costs and minimize operational energy before specifying any active cooling systems.
+                </p>
+            </div>
 
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200">
-                <div class="flex flex-col items-center gap-4 relative">
-                    
-                    <div class="w-full max-w-2xl bg-teal-50 border-2 border-teal-200 rounded-lg p-6 text-center transform transition hover:scale-[1.02] cursor-default z-30 shadow-md">
-                        <h3 class="text-2xl font-bold text-teal-800 mb-2">1. LEAN ARCHITECTURE</h3>
-                        <p class="text-teal-700">Optimize building orientation, urban morphology, and spatial layouts to minimize baseline heat gain at near-zero incremental capital cost.</p>
-                    </div>
-                    
-                    <div class="w-10 h-8 flex justify-center items-center text-stone-400 font-bold text-2xl z-20">&#8595;</div>
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-stone-200">
+                <div class="flex flex-col items-center gap-4 relative">
+                    
+                    <div class="w-full max-w-2xl bg-teal-50 border-2 border-teal-200 rounded-lg p-6 text-center transform transition hover:scale-[1.02] cursor-default z-30 shadow-md">
+                        <h3 class="text-2xl font-bold text-teal-800 mb-2">1. LEAN ARCHITECTURE</h3>
+                        <p class="text-teal-700">Optimize building orientation, urban morphology, and spatial layouts to minimize baseline heat gain at near-zero incremental capital cost.</p>
+                    </div>
+                    
+                    <div class="w-10 h-8 flex justify-center items-center text-stone-400 font-bold text-2xl z-20">&#8595;</div>
 
-                    <div class="w-full max-w-xl bg-teal-100 border-2 border-teal-300 rounded-lg p-6 text-center transform transition hover:scale-[1.02] cursor-default z-20 shadow-md">
-                        <h3 class="text-xl font-bold text-teal-800 mb-2">2. PASSIVE DESIGN</h3>
-                        <p class="text-teal-700 text-sm">Deploy high-performance envelopes, natural ventilation, targeted shading, cool roofs, and insulation to reduce residual cooling loads to the absolute minimum.</p>
-                    </div>
+                    <div class="w-full max-w-xl bg-teal-100 border-2 border-teal-300 rounded-lg p-6 text-center transform transition hover:scale-[1.02] cursor-default z-20 shadow-md">
+                        <h3 class="text-xl font-bold text-teal-800 mb-2">2. PASSIVE DESIGN</h3>
+                        <p class="text-teal-700 text-sm">Deploy high-performance envelopes, natural ventilation, targeted shading, cool roofs, and insulation to reduce residual cooling loads to the absolute minimum.</p>
+                    </div>
 
-                    <div class="w-10 h-8 flex justify-center items-center text-stone-400 font-bold text-2xl z-10">&#8595;</div>
+                    <div class="w-10 h-8 flex justify-center items-center text-stone-400 font-bold text-2xl z-10">&#8595;</div>
 
-                    <div class="w-full max-w-lg bg-teal-200 border-2 border-teal-400 rounded-lg p-6 text-center transform transition hover:scale-[1.02] cursor-default z-10 shadow-md">
-                        <h3 class="text-lg font-bold text-teal-900 mb-2">3. EFFICIENT ACTIVE SYSTEMS</h3>
-                        <p class="text-teal-800 text-sm">Size and deploy mechanical cooling (AC and fans) <i>only</i> to address the remaining load, avoiding over-specification and grid stress.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                    <div class="w-full max-w-lg bg-teal-200 border-2 border-teal-400 rounded-lg p-6 text-center transform transition hover:scale-[1.02] cursor-default z-10 shadow-md">
+                        <h3 class="text-lg font-bold text-teal-900 mb-2">3. EFFICIENT ACTIVE SYSTEMS</h3>
+                        <p class="text-teal-800 text-sm">Size and deploy mechanical cooling (AC and fans) <i>only</i> to address the remaining load, avoiding over-specification and grid stress.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="technology" class="scroll-mt-24">
-            <div class="mb-8 border-l-4 border-stone-400 pl-4">
-                <h2 class="text-3xl font-bold text-stone-900 mb-2">3. Technology & Design Matrix</h2>
-                <p class="text-stone-600 text-lg max-w-3xl">
-                    This section evaluates specific passive cooling interventions applicable to the ASEAN context. It provides a comparative analysis of cooling energy savings, allowing stakeholders to select the most cost-effective and climate-appropriate strategies for new constructions and retrofits.
-                </p>
-            </div>
+        <section id="technology" class="scroll-mt-24">
+            <div class="mb-8 border-l-4 border-stone-400 pl-4">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">3. Technology & Design Matrix</h2>
+                <p class="text-stone-600 text-lg max-w-3xl">
+                    This section evaluates specific passive cooling interventions applicable to the ASEAN context. It provides a comparative analysis of cooling energy savings, allowing stakeholders to select the most cost-effective and climate-appropriate strategies for new constructions and retrofits.
+                </p>
+            </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div class="lg:col-span-8 bg-white p-6 rounded-xl shadow-sm border border-stone-200">
-                    <h3 class="text-xl font-bold mb-4 text-stone-800 flex items-center gap-2"><span class="text-teal-500">&#9881;</span> Cooling Energy Savings Potential</h3>
-                    <p class="text-sm text-stone-500 mb-6">Percentage ranges of cooling energy savings derived from different passive technologies.</p>
-                    <div class="chart-container">
-                        <canvas id="techChart"></canvas>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-8 bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="text-xl font-bold mb-4 text-stone-800 flex items-center gap-2"><span class="text-teal-500">&#9881;</span> Cooling Energy Savings Potential</h3>
+                    <p class="text-sm text-stone-500 mb-6">Percentage ranges of cooling energy savings derived from different passive technologies.</p>
+                    <div class="chart-container">
+                        <canvas id="techChart"></canvas>
+                    </div>
+                </div>
 
-                <div class="lg:col-span-4 flex flex-col gap-4">
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-stone-200 hover:border-teal-400 transition-colors">
-                        <div class="text-teal-600 text-2xl mb-2">&#127960;</div>
-                        <h4 class="font-bold text-stone-800">Cool Roofs</h4>
-                        <p class="text-sm text-stone-600 mt-1">Excellent region-wide suitability. Maximizes albedo. Best return for low-income communities. Payback: 3-5 years.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-stone-200 hover:border-teal-400 transition-colors">
-                        <div class="text-teal-600 text-2xl mb-2">&#128168;</div>
-                        <h4 class="font-bold text-stone-800">Passive Ventilation</h4>
-                        <p class="text-sm text-stone-600 mt-1">High potential in monsoon seasons. Constrained by urban noise/pollution. Payback: 6-9 years.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-stone-200 hover:border-teal-400 transition-colors">
-                        <div class="text-teal-600 text-2xl mb-2">&#128221;</div>
-                        <h4 class="font-bold text-stone-800">Envelope Optimization</h4>
-                        <p class="text-sm text-stone-600 mt-1">Essential intervention. Low-E glazing (SHGC &le; 0.25) is high-impact in dense cities. Payback: 5-10 years.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div class="lg:col-span-4 flex flex-col gap-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-stone-200 hover:border-teal-400 transition-colors">
+                        <div class="text-teal-600 text-2xl mb-2">&#127960;</div>
+                        <h4 class="font-bold text-stone-800">Cool Roofs</h4>
+                        <p class="text-sm text-stone-600 mt-1">Excellent region-wide suitability. Maximizes albedo. Best return for low-income communities. Payback: 3-5 years.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-stone-200 hover:border-teal-400 transition-colors">
+                        <div class="text-teal-600 text-2xl mb-2">&#128168;</div>
+                        <h4 class="font-bold text-stone-800">Passive Ventilation</h4>
+                        <p class="text-sm text-stone-600 mt-1">High potential in monsoon seasons. Constrained by urban noise/pollution. Payback: 6-9 years.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-stone-200 hover:border-teal-400 transition-colors">
+                        <div class="text-teal-600 text-2xl mb-2">&#128221;</div>
+                        <h4 class="font-bold text-stone-800">Envelope Optimization</h4>
+                        <p class="text-sm text-stone-600 mt-1">Essential intervention. Low-E glazing (SHGC &le; 0.25) is high-impact in dense cities. Payback: 5-10 years.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="readiness" class="scroll-mt-24">
-            <div class="mb-8 border-l-4 border-blue-500 pl-4">
-                <h2 class="text-3xl font-bold text-stone-900 mb-2">4. Regional Readiness: Policy & Finance</h2>
-                <p class="text-stone-600 text-lg max-w-3xl">
-                    A significant developmental divide exists across AMS regarding passive cooling implementation. This interactive tool allows you to explore the policy strength, market maturity, and specific financial gaps for each member state, revealing where regional cooperation and capacity building are most needed.
-                </p>
-            </div>
+        <section id="readiness" class="scroll-mt-24">
+            <div class="mb-8 border-l-4 border-blue-500 pl-4">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">4. Regional Readiness: Policy & Finance</h2>
+                <p class="text-stone-600 text-lg max-w-3xl">
+                    A significant developmental divide exists across AMS regarding passive cooling implementation. This interactive tool allows you to explore the policy strength, market maturity, and specific financial gaps for each member state, revealing where regional cooperation and capacity building are most needed.
+                </p>
+            </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden flex flex-col md:flex-row">
-                <div class="w-full md:w-1/3 bg-stone-100 border-r border-stone-200 p-4 max-h-[500px] overflow-y-auto">
-                    <h3 class="font-bold text-stone-800 uppercase text-xs tracking-wider mb-3">Select Country</h3>
-                    <div id="countryList" class="flex flex-col gap-2">
-                    </div>
-                </div>
-                <div class="w-full md:w-2/3 p-6 lg:p-8" id="countryDetails">
-                    <div class="flex flex-col items-center justify-center h-full text-stone-400">
-                        <span class="text-5xl mb-4">&#128269;</span>
-                        <p>Select a country from the list to view its readiness profile.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden flex flex-col md:flex-row">
+                <div class="w-full md:w-1/3 bg-stone-100 border-r border-stone-200 p-4 max-h-[500px] overflow-y-auto">
+                    <h3 class="font-bold text-stone-800 uppercase text-xs tracking-wider mb-3">Select Country</h3>
+                    <div id="countryList" class="flex flex-col gap-2">
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3 p-6 lg:p-8" id="countryDetails">
+                    <div class="flex flex-col items-center justify-center h-full text-stone-400">
+                        <span class="text-5xl mb-4">&#128269;</span>
+                        <p>Select a country from the list to view its readiness profile.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="action" class="scroll-mt-24">
-            <div class="mb-8 border-l-4 border-green-600 pl-4">
-                <h2 class="text-3xl font-bold text-stone-900 mb-2">5. Action Plan & Recommendations</h2>
-                <p class="text-stone-600 text-lg max-w-3xl">
-                    To transition from theory to practice, specific actions must be undertaken by distinct stakeholder groups. This section outlines the timeline for regional implementation (2026-2030) and provides tailored, actionable recommendations for policymakers, developers, investors, and designers.
-                </p>
-            </div>
+        <section id="action" class="scroll-mt-24">
+            <div class="mb-8 border-l-4 border-green-600 pl-4">
+                <h2 class="text-3xl font-bold text-stone-900 mb-2">5. Action Plan & Recommendations</h2>
+                <p class="text-stone-600 text-lg max-w-3xl">
+                    To transition from theory to practice, specific actions must be undertaken by distinct stakeholder groups. This section outlines the timeline for regional implementation (2026-2030) and provides tailored, actionable recommendations for policymakers, developers, investors, and designers.
+                </p>
+            </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200 mb-8">
-                <h3 class="text-xl font-bold mb-6 text-stone-800 border-b pb-2">Roadmap Timeline (2026-2030)</h3>
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
-                    <div class="hidden md:block absolute top-6 left-10 right-10 h-1 bg-stone-200 z-0"></div>
-                    
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 rounded-full bg-stone-800 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">26</div>
-                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Foundation</h4>
-                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
-                            <li>Passive Cooling Alliance</li>
-                            <li>Harmonize testing</li>
-                            <li>Capacity building</li>
-                        </ul>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">27</div>
-                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Piloting</h4>
-                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
-                            <li>5+ AMS public pilots</li>
-                            <li>Model building codes</li>
-                            <li>TMY dataset launch</li>
-                        </ul>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">28</div>
-                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Integration</h4>
-                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
-                            <li>Mandates in procurement</li>
-                            <li>Code alignment</li>
-                            <li>Supplier networks</li>
-                        </ul>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 rounded-full bg-teal-400 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">29</div>
-                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Acceleration</h4>
-                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
-                            <li>Green loan rollout</li>
-                            <li>Low-income retrofits</li>
-                            <li>15% market penetration</li>
-                        </ul>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 rounded-full bg-teal-300 text-stone-900 flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">30</div>
-                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Verification</h4>
-                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
-                            <li>Target reviews (15-25%)</li>
-                            <li>Best-practices database</li>
-                            <li>Next phase planning</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200 mb-8">
+                <h3 class="text-xl font-bold mb-6 text-stone-800 border-b pb-2">Roadmap Timeline (2026-2030)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+                    <div class="hidden md:block absolute top-6 left-10 right-10 h-1 bg-stone-200 z-0"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-full bg-stone-800 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">26</div>
+                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Foundation</h4>
+                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
+                            <li>Passive Cooling Alliance</li>
+                            <li>Harmonize testing</li>
+                            <li>Capacity building</li>
+                        </ul>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">27</div>
+                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Piloting</h4>
+                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
+                            <li>5+ AMS public pilots</li>
+                            <li>Model building codes</li>
+                            <li>TMY dataset launch</li>
+                        </ul>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">28</div>
+                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Integration</h4>
+                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
+                            <li>Mandates in procurement</li>
+                            <li>Code alignment</li>
+                            <li>Supplier networks</li>
+                        </ul>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-full bg-teal-400 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">29</div>
+                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Acceleration</h4>
+                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
+                            <li>Green loan rollout</li>
+                            <li>Low-income retrofits</li>
+                            <li>15% market penetration</li>
+                        </ul>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-full bg-teal-300 text-stone-900 flex items-center justify-center font-bold text-lg mb-3 shadow-md mx-auto md:mx-0">30</div>
+                        <h4 class="font-bold text-stone-900 mb-1 text-center md:text-left">Verification</h4>
+                        <ul class="text-sm text-stone-600 space-y-1 list-disc pl-4">
+                            <li>Target reviews (15-25%)</li>
+                            <li>Best-practices database</li>
+                            <li>Next phase planning</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
-                <div class="flex border-b border-stone-200 bg-stone-50 overflow-x-auto" id="roleTabs">
-                </div>
-                <div class="p-6 md:p-8 min-h-[250px]" id="roleContent">
-                </div>
-            </div>
-        </section>
-        
-        <section class="bg-stone-900 text-stone-300 p-8 rounded-xl shadow-lg mt-12 text-center">
-            <h3 class="text-2xl font-bold text-white mb-4">Monitoring & Evaluation</h3>
-            <p class="mb-6 max-w-2xl mx-auto">Success by 2030 requires tracking core indicators: integrating codes in 6 AMS, achieving 15-25% energy savings, certifying 400+ professionals, and retrofitting over 1,500 public facilities with cool roofs.</p>
-            <div class="flex justify-center gap-4 flex-wrap">
-                <span class="px-4 py-2 bg-stone-800 rounded-lg text-sm border border-stone-700">&#128203; Code Audits</span>
-                <span class="px-4 py-2 bg-stone-800 rounded-lg text-sm border border-stone-700">&#128268; Utility Audits</span>
-                <span class="px-4 py-2 bg-stone-800 rounded-lg text-sm border border-stone-700">&#128181; Green Bond Trackers</span>
-            </div>
-        </section>
+            <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
+                <div class="flex border-b border-stone-200 bg-stone-50 overflow-x-auto" id="roleTabs">
+                </div>
+                <div class="p-6 md:p-8 min-h-[250px]" id="roleContent">
+                </div>
+            </div>
+        </section>
+        
+        <section class="bg-stone-900 text-stone-300 p-8 rounded-xl shadow-lg mt-12 text-center">
+            <h3 class="text-2xl font-bold text-white mb-4">Monitoring & Evaluation</h3>
+            <p class="mb-6 max-w-2xl mx-auto">Success by 2030 requires tracking core indicators: integrating codes in 6 AMS, achieving 15-25% energy savings, certifying 400+ professionals, and retrofitting over 1,500 public facilities with cool roofs.</p>
+            <div class="flex justify-center gap-4 flex-wrap">
+                <span class="px-4 py-2 bg-stone-800 rounded-lg text-sm border border-stone-700">&#128203; Code Audits</span>
+                <span class="px-4 py-2 bg-stone-800 rounded-lg text-sm border border-stone-700">&#128268; Utility Audits</span>
+                <span class="px-4 py-2 bg-stone-800 rounded-lg text-sm border border-stone-700">&#128181; Green Bond Trackers</span>
+            </div>
+        </section>
 
-    </main>
+    </main>
 
-    <footer class="bg-white border-t border-stone-200 py-8 mt-12 text-center text-stone-500 text-sm">
-        <p>Interactive Synthesis based on the ASEAN Centre for Energy (ACE) and UNEP 2026 Roadmap.</p>
-    </footer>
+    <footer class="bg-white border-t border-stone-200 py-8 mt-12 text-center text-stone-500 text-sm">
+        <p>Interactive Synthesis based on the ASEAN Centre for Energy (ACE) and UNEP 2026 Roadmap.</p>
+    </footer>
 
-    <script>
-        const countryData = {
-            "Singapore": { 
-                policy: "Very Advanced", strength: "Mandatory", 
-                finance: "Very Mature", scale: "$5B - $10B",
-                instrument: "Building Control Regulations, Green Mark 2021",
-                targets: "Max OTTV 50 W/m² (non-res), 25 W/m² (res). GFA bonuses for high-tier ratings.",
-                gaps: "GFA-driven financing is capital-intensive; high compliance costs for SMEs."
-            },
-            "Malaysia": { 
-                policy: "Advanced", strength: "Mixed", 
-                finance: "Mature", scale: "$2B - $3B",
-                instrument: "UBBL, MS 1525, MS 2680, Green Building Index (GBI)",
-                targets: "Max OTTV 50 W/m². Mandatory roof insulation with reflective materials. WFR min 15%.",
-                gaps: "Limited access to micro-finance for residential-scale retrofits."
-            },
-            "Thailand": { 
-                policy: "Advanced", strength: "Mixed", 
-                finance: "Mature", scale: "$1B - $2B",
-                instrument: "Building Energy Code (BEC), TREES",
-                targets: "BEC mandatory for 9 building types ≥ 2,000 m². Strict OTTV/RTTV compliance.",
-                gaps: "Limited penetration in rural and peri-urban construction markets."
-            },
-            "Indonesia": { 
-                policy: "Moderate", strength: "Mixed", 
-                finance: "Developing", scale: "$500M - $1B",
-                instrument: "PUPR Reg No. 21/2021, Greenship",
-                targets: "Max OTTV 35 W/m². Green building certification mandatory for state-funded projects.",
-                gaps: "Regional implementation variation; high underwriting risk for local banks."
-            },
-            "Vietnam": { 
-                policy: "Moderate", strength: "Voluntary", 
-                finance: "Developing", scale: "$400M - $800M",
-                instrument: "QCVN 09:2017/BXD, LOTUS",
-                targets: "Max OTTV 60 W/m² (walls), 25 W/m² (roofs). Minimum vent area 5% of floor area.",
-                gaps: "Complex bureaucratic approval processes; currency risks for foreign capital."
-            },
-            "Philippines": { 
-                policy: "Moderate", strength: "Voluntary", 
-                finance: "Developing", scale: "$300M - $500M",
-                instrument: "Green Building Code, BERDE",
-                targets: "Max OTTV 45 W/m². Mandatory natural ventilation openings by occupancy type.",
-                gaps: "High local interest rates; lack of technical capacity in local banks."
-            },
-            "Brunei": { 
-                policy: "Limited", strength: "Voluntary", 
-                finance: "Nascent", scale: "< $50M",
-                instrument: "National Building Code (under dev)",
-                targets: "Basic energy efficiency guidelines and window-to-floor ratios.",
-                gaps: "Fuel/electricity subsidies distort payback economics."
-            },
-            "Cambodia": { 
-                policy: "Limited", strength: "Voluntary", 
-                finance: "Nascent", scale: "< $25M",
-                instrument: "Emerging frameworks",
-                targets: "No explicit passive cooling standards; weak enforcement.",
-                gaps: "Heavily dependent on donor capital; no local green bond market."
-            },
-            "Lao PDR": { 
-                policy: "Limited", strength: "Voluntary", 
-                finance: "Nascent", scale: "< $20M",
-                instrument: "Basic building regulations",
-                targets: "Basic energy efficiency guidelines; no specific passive cooling code.",
-                gaps: "Weak institutional capacity; lack of local debt financing for green projects."
-            },
-            "Myanmar": { 
-                policy: "Limited", strength: "Voluntary", 
-                finance: "Nascent", scale: "< $10M",
-                instrument: "Myanmar National Building Code",
-                targets: "General construction safety codes; no quantified thermal performance.",
-                gaps: "Geopolitical instability; severe capital flight; lack of basic credit market."
-            }
-        };
+    <script>
+        const countryData = {
+            "Singapore": { 
+                policy: "Very Advanced", strength: "Mandatory", 
+                finance: "Very Mature", scale: "$5B - $10B",
+                instrument: "Building Control Regulations, Green Mark 2021",
+                targets: "Max OTTV 50 W/m² (non-res), 25 W/m² (res). GFA bonuses for high-tier ratings.",
+                gaps: "GFA-driven financing is capital-intensive; high compliance costs for SMEs."
+            },
+            "Malaysia": { 
+                policy: "Advanced", strength: "Mixed", 
+                finance: "Mature", scale: "$2B - $3B",
+                instrument: "UBBL, MS 1525, MS 2680, Green Building Index (GBI)",
+                targets: "Max OTTV 50 W/m². Mandatory roof insulation with reflective materials. WFR min 15%.",
+                gaps: "Limited access to micro-finance for residential-scale retrofits."
+            },
+            "Thailand": { 
+                policy: "Advanced", strength: "Mixed", 
+                finance: "Mature", scale: "$1B - $2B",
+                instrument: "Building Energy Code (BEC), TREES",
+                targets: "BEC mandatory for 9 building types ≥ 2,000 m². Strict OTTV/RTTV compliance.",
+                gaps: "Limited penetration in rural and peri-urban construction markets."
+            },
+            "Indonesia": { 
+                policy: "Moderate", strength: "Mixed", 
+                finance: "Developing", scale: "$500M - $1B",
+                instrument: "PUPR Reg No. 21/2021, Greenship",
+                targets: "Max OTTV 35 W/m². Green building certification mandatory for state-funded projects.",
+                gaps: "Regional implementation variation; high underwriting risk for local banks."
+            },
+            "Vietnam": { 
+                policy: "Moderate", strength: "Voluntary", 
+                finance: "Developing", scale: "$400M - $800M",
+                instrument: "QCVN 09:2017/BXD, LOTUS",
+                targets: "Max OTTV 60 W/m² (walls), 25 W/m² (roofs). Minimum vent area 5% of floor area.",
+                gaps: "Complex bureaucratic approval processes; currency risks for foreign capital."
+            },
+            "Philippines": { 
+                policy: "Moderate", strength: "Voluntary", 
+                finance: "Developing", scale: "$300M - $500M",
+                instrument: "Green Building Code, BERDE",
+                targets: "Max OTTV 45 W/m². Mandatory natural ventilation openings by occupancy type.",
+                gaps: "High local interest rates; lack of technical capacity in local banks."
+            },
+            "Brunei": { 
+                policy: "Limited", strength: "Voluntary", 
+                finance: "Nascent", scale: "< $50M",
+                instrument: "National Building Code (under dev)",
+                targets: "Basic energy efficiency guidelines and window-to-floor ratios.",
+                gaps: "Fuel/electricity subsidies distort payback economics."
+            },
+            "Cambodia": { 
+                policy: "Limited", strength: "Voluntary", 
+                finance: "Nascent", scale: "< $25M",
+                instrument: "Emerging frameworks",
+                targets: "No explicit passive cooling standards; weak enforcement.",
+                gaps: "Heavily dependent on donor capital; no local green bond market."
+            },
+            "Lao PDR": { 
+                policy: "Limited", strength: "Voluntary", 
+                finance: "Nascent", scale: "< $20M",
+                instrument: "Basic building regulations",
+                targets: "Basic energy efficiency guidelines; no specific passive cooling code.",
+                gaps: "Weak institutional capacity; lack of local debt financing for green projects."
+            },
+            "Myanmar": { 
+                policy: "Limited", strength: "Voluntary", 
+                finance: "Nascent", scale: "< $10M",
+                instrument: "Myanmar National Building Code",
+                targets: "General construction safety codes; no quantified thermal performance.",
+                gaps: "Geopolitical instability; severe capital flight; lack of basic credit market."
+            }
+        };
 
-        const roleData = {
-            "Policymakers": {
-                icon: "&#127963;",
-                points: [
-                    "<strong>Mandate Passive Standards:</strong> Incorporate quantitative envelope requirements (OTTV, solar reflectance, natural ventilation area) directly into building codes.",
-                    "<strong>Target Vulnerable Communities:</strong> Launch subsidized cool-roof programs for low-income housing, public schools, and community healthcare facilities.",
-                    "<strong>Leverage GFA & Permitting Bonuses:</strong> Provide Floor Area Ratio (FAR) bonuses and fast-track approval lanes for developments that exceed baseline passive cooling standards."
-                ]
-            },
-            "Building Developers": {
-                icon: "&#127970;",
-                points: [
-                    "<strong>Integrate Early:</strong> Mandate passive cooling optimization during the master-planning and conceptual design phase to reduce active system sizes.",
-                    "<strong>Capitalize on Green Premiums:</strong> Use green building certifications (Green Mark, GBI, TREES, Greenship) to capture higher leasing values and attract institutional capital.",
-                    "<strong>Deploy Mixed-Mode Designs:</strong> Prioritize mixed-mode (hybrid) operation layouts that utilize fans and high-setpoint ACs to minimize operational overhead."
-                ]
-            },
-            "Financial Institutions": {
-                icon: "&#128176;",
-                points: [
-                    "<strong>Design Specialized Products:</strong> Develop green mortgages and energy efficiency retrofit loans with extended amortization periods aligned with long-term energy savings.",
-                    "<strong>Unify Risk Frameworks:</strong> Adopt standardized technical underwriting criteria to streamline green bond issuances and lower transaction costs.",
-                    "<strong>Leverage Blended Finance:</strong> Work with multilateral development banks (e.g., the ASEAN Catalytic Green Finance Facility) to mitigate risk through first-loss guarantees."
-                ]
-            },
-            "Building Designers": {
-                icon: "&#128208;",
-                points: [
-                    "<strong>Refine Modeling Skills:</strong> Standardize the use of microclimate and Computational Fluid Dynamics (CFD) simulation tools to optimize airflow and daylighting.",
-                    "<strong>Balance Shading & Light:</strong> Optimize external shading geometries (horizontal overhangs for North/South; vertical fins for East/West) to maximize Daylight Factors while keeping SHGC &le; 0.25.",
-                    "<strong>Conduct Post-Occupancy Evaluations:</strong> Measure real-world indoor temperatures, energy consumption, and occupant comfort to refine thermal comfort standards."
-                ]
-            }
-        };
+        const roleData = {
+            "Policymakers": {
+                icon: "&#127963;",
+                points: [
+                    "<strong>Mandate Passive Standards:</strong> Incorporate quantitative envelope requirements (OTTV, solar reflectance, natural ventilation area) directly into building codes.",
+                    "<strong>Target Vulnerable Communities:</strong> Launch subsidized cool-roof programs for low-income housing, public schools, and community healthcare facilities.",
+                    "<strong>Leverage GFA & Permitting Bonuses:</strong> Provide Floor Area Ratio (FAR) bonuses and fast-track approval lanes for developments that exceed baseline passive cooling standards."
+                ]
+            },
+            "Building Developers": {
+                icon: "&#127970;",
+                points: [
+                    "<strong>Integrate Early:</strong> Mandate passive cooling optimization during the master-planning and conceptual design phase to reduce active system sizes.",
+                    "<strong>Capitalize on Green Premiums:</strong> Use green building certifications (Green Mark, GBI, TREES, Greenship) to capture higher leasing values and attract institutional capital.",
+                    "<strong>Deploy Mixed-Mode Designs:</strong> Prioritize mixed-mode (hybrid) operation layouts that utilize fans and high-setpoint ACs to minimize operational overhead."
+                ]
+            },
+            "Financial Institutions": {
+                icon: "&#128176;",
+                points: [
+                    "<strong>Design Specialized Products:</strong> Develop green mortgages and energy efficiency retrofit loans with extended amortization periods aligned with long-term energy savings.",
+                    "<strong>Unify Risk Frameworks:</strong> Adopt standardized technical underwriting criteria to streamline green bond issuances and lower transaction costs.",
+                    "<strong>Leverage Blended Finance:</strong> Work with multilateral development banks (e.g., the ASEAN Catalytic Green Finance Facility) to mitigate risk through first-loss guarantees."
+                ]
+            },
+            "Building Designers": {
+                icon: "&#128208;",
+                points: [
+                    "<strong>Refine Modeling Skills:</strong> Standardize the use of microclimate and Computational Fluid Dynamics (CFD) simulation tools to optimize airflow and daylighting.",
+                    "<strong>Balance Shading & Light:</strong> Optimize external shading geometries (horizontal overhangs for North/South; vertical fins for East/West) to maximize Daylight Factors while keeping SHGC &le; 0.25.",
+                    "<strong>Conduct Post-Occupancy Evaluations:</strong> Measure real-world indoor temperatures, energy consumption, and occupant comfort to refine thermal comfort standards."
+                ]
+            }
+        };
 
-        function initCharts() {
-            Chart.defaults.font.family = "'Inter', 'Helvetica', 'Arial', sans-serif";
-            Chart.defaults.color = '#57534e';
+        function initCharts() {
+            Chart.defaults.font.family = "'Inter', 'Helvetica', 'Arial', sans-serif";
+            Chart.defaults.color = '#57534e';
 
-            const ctxTemp = document.getElementById('tempChart').getContext('2d');
-            new Chart(ctxTemp, {
-                type: 'bar',
-                data: {
-                    labels: ['Bangkok', 'Ho Chi Minh', 'Manila', 'Kuala Lumpur', 'Jakarta', 'Singapore'],
-                    datasets: [
-                        {
-                            label: 'Baseline 2000 (°C)',
-                            data: [33.3, 33.0, 32.6, 32.2, 31.9, 31.7],
-                            backgroundColor: '#d6d3d1'
-                        },
-                        {
-                            label: 'Current 2025 (°C)',
-                            data: [34.2, 33.9, 33.5, 33.1, 32.8, 32.6],
-                            backgroundColor: '#f97316'
-                        },
-                        {
-                            label: 'Projected 2050 (°C)',
-                            data: [38.1, 37.7, 37.2, 36.9, 36.4, 36.1],
-                            backgroundColor: '#dc2626'
-                        }
-                    ]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: { mode: 'index', intersect: false }
-                    },
-                    scales: {
-                        y: { min: 30, title: { display: true, text: 'Temperature (°C)' } }
-                    }
-                }
-            });
+            const ctxTemp = document.getElementById('tempChart').getContext('2d');
+            new Chart(ctxTemp, {
+                type: 'bar',
+                data: {
+                    labels: ['Bangkok', 'Ho Chi Minh', 'Manila', 'Kuala Lumpur', 'Jakarta', 'Singapore'],
+                    datasets: [
+                        {
+                            label: 'Baseline 2000 (°C)',
+                            data: [33.3, 33.0, 32.6, 32.2, 31.9, 31.7],
+                            backgroundColor: '#d6d3d1'
+                        },
+                        {
+                            label: 'Current 2025 (°C)',
+                            data: [34.2, 33.9, 33.5, 33.1, 32.8, 32.6],
+                            backgroundColor: '#f97316'
+                        },
+                        {
+                            label: 'Projected 2050 (°C)',
+                            data: [38.1, 37.7, 37.2, 36.9, 36.4, 36.1],
+                            backgroundColor: '#dc2626'
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        y: { min: 30, title: { display: true, text: 'Temperature (°C)' } }
+                    }
+                }
+            });
 
-            const ctxUhi = document.getElementById('uhiChart').getContext('2d');
-            new Chart(ctxUhi, {
-                type: 'bar',
-                data: {
-                    labels: ['Jakarta', 'Manila', 'Bangkok', 'Ho Chi Minh', 'Kuala Lumpur', 'Singapore'],
-                    datasets: [
-                        {
-                            type: 'line',
-                            label: 'Day UHI (°C)',
-                            data: [6.2, 5.8, 5.4, 4.9, 4.2, 3.8],
-                            borderColor: '#ef4444',
-                            borderWidth: 2,
-                            yAxisID: 'y'
-                        },
-                        {
-                            type: 'line',
-                            label: 'Night UHI (°C)',
-                            data: [8.7, 7.9, 7.2, 6.8, 5.9, 5.1],
-                            borderColor: '#8b5cf6',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            yAxisID: 'y'
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Green Cover (%)',
-                            data: [8.2, 5.1, 6.8, 12.4, 15.6, 47.0],
-                            backgroundColor: '#10b981',
-                            yAxisID: 'y1'
-   
+            const ctxUhi = document.getElementById('uhiChart').getContext('2d');
+            new Chart(ctxUhi, {
+                type: 'bar',
+                data: {
+                    labels: ['Jakarta', 'Manila', 'Bangkok', 'Ho Chi Minh', 'Kuala Lumpur', 'Singapore'],
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Day UHI (°C)',
+                            data: [6.2, 5.8, 5.4, 4.9, 4.2, 3.8],
+                            borderColor: '#ef4444',
+                            borderWidth: 2,
+                            yAxisID: 'y'
+                        },
+                        {
+                            type: 'line',
+                            label: 'Night UHI (°C)',
+                            data: [8.7, 7.9, 7.2, 6.8, 5.9, 5.1],
+                            borderColor: '#8b5cf6',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            yAxisID: 'y'
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Green Cover (%)',
+                            data: [8.2, 5.1, 6.8, 12.4, 15.6, 47.0],
+                            backgroundColor: '#10b981',
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        y: { 
+                            type: 'linear', display: true, position: 'left',
+                            title: { display: true, text: 'UHI Intensity (°C)' }
+                        },
+                        y1: {
+                            type: 'linear', display: true, position: 'right',
+                            grid: { drawOnChartArea: false },
+                            title: { display: true, text: 'Green Cover (%)' }
+                        }
+                    }
+                }
+            });
+
+            const ctxTech = document.getElementById('techChart').getContext('2d');
+            new Chart(ctxTech, {
+                type: 'bar',
+                indexAxis: 'y',
+                data: {
+                    labels: ['Hybrid Systems (Fans+AC)', 'Envelope Optimization', 'Passive Ventilation', 'Green Infrastructure', 'Cool Roofs', 'Thermal Mass'],
+                    datasets: [{
+                        label: 'Average Energy Savings (%)',
+                        data: [50, 30, 27.5, 20, 15, 11.5],
+                        backgroundColor: [
+                            '#0d9488', '#14b8a6', '#2dd4bf', '#5eead4', '#99f6e4', '#ccfbf1'
+                        ],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { title: { display: true, text: '% Cooling Energy Savings' }, max: 60 }
+                    }
+                }
+            });
+        }
+
+        function initReadiness() {
+            const listContainer = document.getElementById('countryList');
+            const detailsContainer = document.getElementById('countryDetails');
+            
+            Object.keys(countryData).forEach(country => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left px-4 py-3 rounded-lg border border-transparent font-medium text-stone-700 hover:bg-white hover:border-stone-200 transition-colors focus:outline-none';
+                btn.textContent = country;
+                
+                btn.addEventListener('click', () => {
+                    const buttons = listContainer.querySelectorAll('button');
+                    buttons.forEach(b => {
+                        b.classList.remove('bg-white', 'border-teal-400', 'text-teal-700', 'shadow-sm');
+                        b.classList.add('border-transparent', 'text-stone-700');
+                    });
+                    btn.classList.remove('border-transparent', 'text-stone-700');
+                    btn.classList.add('bg-white', 'border-teal-400', 'text-teal-700', 'shadow-sm');
+
+                    const data = countryData[country];
+                    
+                    const getBadgeColor = (val) => {
+                        if(val.includes('Advanced') || val.includes('Mature')) return 'bg-teal-100 text-teal-800 border-teal-200';
+                        if(val.includes('Moderate') || val.includes('Developing')) return 'bg-blue-100 text-blue-800 border-blue-200';
+                        return 'bg-orange-100 text-orange-800 border-orange-200';
+                    };
+
+                    detailsContainer.innerHTML = `
+                        <div class="fade-in">
+                            <div class="flex items-center gap-3 mb-6 border-b pb-4">
+                                <span class="text-3xl">&#127759;</span>
+                                <h3 class="text-2xl font-bold text-stone-900">${country}</h3>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
+                                    <span class="text-xs text-stone-500 uppercase tracking-wider block mb-1">Policy Strength</span>
+                                    <span class="inline-block px-2 py-1 rounded text-sm font-semibold border ${getBadgeColor(data.policy)}">${data.policy}</span>
+                                    <span class="text-sm text-stone-600 ml-2">(${data.strength})</span>
+                                </div>
+                                <div class="bg-stone-50 p-4 rounded-lg border border-stone-200">
+                                    <span class="text-xs text-stone-500 uppercase tracking-wider block mb-1">Financial Maturity</span>
+                                    <span class="inline-block px-2 py-1 rounded text-sm font-semibold border ${getBadgeColor(data.finance)}">${data.finance}</span>
+                                    <p class="text-xs text-stone-600 mt-1 font-mono">${data.scale} / year</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h4 class="font-bold text-stone-800 text-sm flex items-center gap-2"><span class="text-teal-600">&#128220;</span> Primary Instruments</h4>
+                                    <p class="text-sm text-stone-600 mt-1 bg-white p-3 rounded border border-stone-100">${data.instrument}</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-stone-800 text-sm flex items-center gap-2"><span class="text-teal-600">&#127919;</span> Key Thresholds & Targets</h4>
+                                    <p class="text-sm text-stone-600 mt-1 bg-white p-3 rounded border border-stone-100">${data.targets}</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-orange-800 text-sm flex items-center gap-2"><span class="text-orange-500">&#9888;</span> Critical Gaps</h4>
+                                    <p class="text-sm text-stone-600 mt-1 bg-orange-50 p-3 rounded border border-orange-100">${data.gaps}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                listContainer.appendChild(btn);
+            });
+            
+            const firstBtn = listContainer.querySelector('button');
+            if (firstBtn) firstBtn.click();
+        }
+
+        function initRoles() {
+            const tabsContainer = document.getElementById('roleTabs');
+            const contentContainer = document.getElementById('roleContent');
+            
+            Object.keys(roleData).forEach((role, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'tab-btn flex-1 py-4 px-6 text-center font-semibold text-sm border-b-2 border-transparent text-stone-500 hover:text-teal-600 hover:bg-white focus:outline-none whitespace-nowrap';
+                btn.textContent = role;
+                
+                btn.addEventListener('click', () => {
+                    const buttons = tabsContainer.querySelectorAll('button');
+                    buttons.forEach(b => {
+                        b.classList.remove('text-teal-600', 'border-teal-600', 'bg-white');
+                        b.classList.add('text-stone-500', 'border-transparent');
+                    });
+                    btn.classList.remove('text-stone-500', 'border-transparent');
+                    btn.classList.add('text-teal-600', 'border-teal-600', 'bg-white');
+
+                    const data = roleData[role];
+                    
+                    let pointsHtml = '';
+                    data.points.forEach(pt => {
+                        pointsHtml += `<li class="pl-2 border-l-2 border-teal-300 text-stone-700 leading-relaxed">${pt}</li>`;
+                    });
+
+                    contentContainer.innerHTML = `
+                        <div class="fade-in max-w-3xl mx-auto">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-2xl">
+                                    ${data.icon}
+                                </div>
+                                <h3 class="text-2xl font-bold text-stone-900">${role}</h3>
+                            </div>
+                            <ul class="space-y-4">
+                                ${pointsHtml}
+                            </ul>
+                        </div>
+                    `;
+                });
+                tabsContainer.appendChild(btn);
+            });
+            
+            const firstTab = tabsContainer.querySelector('button');
+            if (firstTab) firstTab.click();
+        }
+
+        window.onload = function() {
+            initCharts();
+            initReadiness();
+            initRoles();
+        };
+    </script>
+</body>
+</html>
